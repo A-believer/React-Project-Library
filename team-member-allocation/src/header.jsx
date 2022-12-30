@@ -1,7 +1,13 @@
-const Header = () => {
+const Header = ({team, teamMemberCount}) => {
     return (
-        <header>
-            <h1>Header</h1>
+        <header className="container">
+            <div className="row justify-content-center mt-3 mb-4">
+                <div className="col-8">
+                   <h1>Team Member Allocation</h1>
+                   <h3>{team} has { teamMemberCount} Members</h3> 
+                </div>
+            </div>
+            
         </header>
     )
 }
