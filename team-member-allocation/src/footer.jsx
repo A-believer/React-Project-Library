@@ -1,4 +1,4 @@
-;const Footer = () => {
+const Footer = () => {
 
     let today = new Date();
     return (
