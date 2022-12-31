@@ -11,7 +11,7 @@ import Nav from './Nav';
 import NotFound from './NotFound';
 
 function App() {
-    const [team, setTeam] = useState(JSON.parse(localStorage.getItem('team')) || "Team B")
+    const [selectedTeam, setTeam] = useState(JSON.parse(localStorage.getItem('selectedTeam')) || "Team B")
     const [employees, setEmployees] = useState(JSON.parse(localStorage.getItem('employees')) ||[{
       
     id: 1,
@@ -105,7 +105,7 @@ function App() {
 
     const handleEmployeeTeamChange = (e) => {
         const employeeTeamChange = employees.map((employee) => employee.id === parseInt(e.currentTarget.id)
-            ? (employee.teamName === team) ? { ...employee, teamName: '' } : { ...employee, teamName: team } : employee);
+            ? (employee.teamName === selectedTeam) ? { ...employee, teamName: '' } : { ...employee, teamName: selectedTeam } : employee);
         setEmployees(employeeTeamChange);
     }
   
@@ -114,25 +114,26 @@ function App() {
   }, [employees]) 
 
   useEffect(() => {
-    localStorage.setItem('team', JSON.stringify(team));
-  }, [team]) 
+    localStorage.setItem('selectedTeam', JSON.stringify(selectedTeam));
+  }, [selectedTeam]) 
 
   return (
     <Router>
       <Nav/>
       <Header 
-        team={team}
-        teamMemberCount={employees.filter(employee => employee.teamName === team).length}
+        selectedTeam={selectedTeam}
+        teamMemberCount={employees.filter(employee => employee.teamName === selectedTeam).length}
       />
       <Routes>
         <Route path='/' element={<Employees employees={employees} 
-        team={team}
+        selectedTeam={selectedTeam}
         handleTeamChangeEvent={handleTeamChangeEvent}
         handleEmployeeTeamChange={handleEmployeeTeamChange}
         />}>
         </Route>
         
-        <Route path='/GroupedTeamMembers' element={<GroupedTeamMembers />}></Route>
+        <Route path='/GroupedTeamMembers' element={<GroupedTeamMembers employees={employees}
+          selectedTeam={selectedTeam} setTeam={setTeam}/>}></Route>
         <Route path='*' element={<NotFound/>}></Route>
       </Routes>
       <Footer/>
